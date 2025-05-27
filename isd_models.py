@@ -44,10 +44,7 @@ class LowFrequencySeries:
 
 class ISDAlgorithm:
     """
-    Vectorized implementation of the Iterative Shifting Disaggregation (ISD) Algorithm.
-    
-    This version uses NumPy vectorization to improve performance by eliminating
-    explicit loops where possible.
+    Implementation of the Iterative Shifting Disaggregation (ISD) Algorithm.
     """
     
     def __init__(
@@ -184,7 +181,7 @@ class ISDAlgorithm:
         return naive_daily_series
     
     def _estimate_missing_values_vectorized(self, daily_values: np.ndarray, series_name: str) -> None:
-        """Estimates missing values using vectorized operations."""
+        """Estimates missing values."""
         missing_mask = daily_values == 0
         n_missing = np.sum(missing_mask)
         
@@ -199,7 +196,7 @@ class ISDAlgorithm:
     
     def aggregate_series_vectorized(self) -> np.ndarray:
         """
-        Aggregates all naive daily series using vectorized operations.
+        Aggregates all naive daily series.
         """
         if not self.naive_daily_series:
             self.naive_disaggregate_vectorized()
@@ -221,12 +218,12 @@ class ISDAlgorithm:
         self, X_matrix: np.ndarray, y_hat: np.ndarray
     ) -> Tuple[np.ndarray, Dict[str, float]]:
         """
-        Trains a linear regression model using vectorized operations.
+        Trains a linear regression model.
         """
         # Vectorized least squares: β̂ = (X^T X)^(-1) X^T y
         XTX = X_matrix.T @ X_matrix
         XTy = X_matrix.T @ y_hat
-        beta = np.linalg.solve(XTX, XTy)  # More numerically stable than inv(XTX) @ XTy
+        beta = np.linalg.solve(XTX, XTy)
         
         # Calculate fit metrics
         y_pred = X_matrix @ beta
@@ -255,8 +252,6 @@ class ISDAlgorithm:
     ) -> np.ndarray:
         """
         Vectorized update phase for all intervals of a series.
-        
-        This replaces the nested loops with matrix operations.
         """
         info = self.interval_info[series_name]
         naive_values = self.naive_daily_series[series_name].copy()
@@ -305,7 +300,7 @@ class ISDAlgorithm:
     
     def disaggregate(self, verbose: bool = False) -> Dict[str, np.ndarray]:
         """
-        Executes the complete disaggregation algorithm with vectorized operations.
+        Executes the complete disaggregation algorithm.
         """
         # Step 1: Initial naive disaggregation and aggregation
         if self.y_hat is None:
