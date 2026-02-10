@@ -1,0 +1,1 @@
+This is a beta implentation of https://www.researchgate.net/publication/388700005_An_Iterative_Shifting_Disaggregation_Algorithm_for_Multi-Source_Irregularly_Sampled_and_Overlapped_Time_Series. Please, note that this framework is still on working.
